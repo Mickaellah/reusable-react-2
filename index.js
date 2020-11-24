@@ -3,16 +3,25 @@ import ReactDOM from 'react-dom';
 
 const CharacterCounterInput = ({ text, defaults }) => {
 	const maxLength = 280;
+	const [ value, setValue ] = useState('');
+
+	function handleClick(text) {
+		setValue(prevValue => prevValue += text);
+	}
+
+	function handleChange(e) {
+		setValue(e.currentTarget.value);
+	}
 
 	return (
-		<div className="counterInput">
+		<div className={`counterInput ${value.length > maxLength && 'tooLong'}`}>
 			<div>
 				{defaults.map(b => {
-					return <button key={b}>{b}</button>;
+					return <button onClick={() => handleClick(b)} key={b}>{b}</button>;
 				})}
 			</div>
-			<textarea placeholder={text} />
-			<div>0/{maxLength}</div>
+			<textarea placeholder={text} value={value} onChange={() => handleChange(b)} />
+			<div>{value.length}/{maxLength}</div>
 		</div>
 	);
 };
